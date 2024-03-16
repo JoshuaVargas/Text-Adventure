@@ -1,17 +1,29 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
+#include "scenes.h"
+#include "parse.h"
 
+#define MAX_INPUT_CHARS 256
 
 int main(int argc, char *argv[]) {
+	bool gameIsRunning = true;
+	char *options[256] = {"quit", "continue"};
 
-	printf("Zealot\n");
-	printf("a horror command-line text adventure\n");
-	printf("by Joshua Vargas\n");
+	startScene();
 
-	char inputBuffer[1028] = {0};
-	fgets(inputBuffer, 1028, stdin);
+	while(gameIsRunning) {
+		char response[MAX_INPUT_CHARS];
+		fgets(response, MAX_INPUT_CHARS, stdin);
+		removeImplicitNewLine(response);
 
-	printf("%s\n", inputBuffer);
+		if(response[0] == 'q' && response[1] == '\0') {
+			gameIsRunning = false;
+		} else if(stringCompare(response, options[0])) {
+			gameIsRunning = false;
+		}
+	}
 
 	return 0;
 }
